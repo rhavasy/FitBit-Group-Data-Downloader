@@ -1,6 +1,6 @@
 import fitbit
 f=fitbit.FitBit()
-PIN = 'pr8f78a3msncolh3lo8g86jqbv'
+PIN = 'vk8o91i4littme6aik65uermtu'
 
 auth_url, auth_token = f.GetRequestToken()
 

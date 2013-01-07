@@ -82,13 +82,12 @@ class FitBit():
         return response
     
     def PickApiCall(self):
-        """Presents user with options and returns specific FitBit API string selected as a string."""      
-        # See FitBit API documentation for specific call syntax.
+        """Presents user with options and returns specific FitBit API string selected as a string. See FitBit API docs for specific call syntax."""      
         calls = ['/1/user/-/profile.xml', '/1/user/-/devices.xml', '/1/user/-/activities/steps/date/today/7d.xml'] # profile data, device data, last 7 days steps
         desc = ['User profile data.', 'Device data (incl. last upload).', 'Last 7 days\' steps.']
         for i in range(len(desc)):
             e = desc[i]
-            print '%i. %s' % (i+1, e) # i+1 makes the list appear 1,2,3 to user rather than o-based index 
+            print '%i. %s' % (i+1, e) # i+1 makes the list appear 1,2,3 to user rather than 0-based index 
         prompt = raw_input('Select an API call by number:')
         apistring = calls[int(prompt)-1] # -1 brings the chosen base-1 index back to base-0 of list
         return apistring
