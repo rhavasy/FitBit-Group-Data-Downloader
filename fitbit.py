@@ -65,11 +65,7 @@ class FitBit():
         access_token = access_token.to_string()
         return access_token
    
-    def ApiCall(self, access_token, apiCall='/1/user/-/profile.json'):
-        #other API Calls possible, or read the FitBit documentation for the full list.
-        #apiCall = '/1/user/-/devices.json' 
-        #apiCall = '/1/user/-/profile.json' 
-        #apiCall = '/1/user/-/activities/date/2011-06-17.json'
+    def ApiCall(self, access_token, apiCall): #removed original hardcoded api call in favor of string passed from PickApiCall()
         
         signature_method = oauth.SignatureMethod_PLAINTEXT()
         connection = httplib.HTTPSConnection(self.SERVER) 
@@ -82,26 +78,17 @@ class FitBit():
         headers = oauth_request.to_header(realm='api.fitbit.com') 
         connection.request('GET', apiCall, headers=headers) 
         resp = connection.getresponse() 
-        json = resp.read() 
-        return json
+        response = resp.read() 
+        return response
     
-    def PickApiCall():
+    def PickApiCall(self):
         """Presents user with options and returns specific FitBit API string selected as a string."""      
-        # Add possible FitBit API call examples
-        
+        # See FitBit API documentation for specific call syntax.
         calls = ['/1/user/-/profile.xml', '/1/user/-/devices.xml', '/1/user/-/activities/steps/date/today/7d.xml'] # profile data, device data, last 7 days steps
         desc = ['User profile data.', 'Device data (incl. last upload).', 'Last 7 days\' steps.']
-        
-        if DEBUG:
-            print 'Call =  %s. Description: %s' % (calls[0], desc[0])
-        
         for i in range(len(desc)):
             e = desc[i]
             print '%i. %s' % (i+1, e) # i+1 makes the list appear 1,2,3 to user rather than o-based index 
         prompt = raw_input('Select an API call by number:')
         apistring = calls[int(prompt)-1] # -1 brings the chosen base-1 index back to base-0 of list
-        
-        if DEBUG:
-            print apistring
-        
         return apistring
