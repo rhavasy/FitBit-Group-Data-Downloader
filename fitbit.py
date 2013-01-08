@@ -7,8 +7,8 @@ This library provides a wrapper to the FitBit API and does not provide storage o
 
 Most of the code has been adapted from: https://groups.google.com/group/fitbit-api/browse_thread/thread/0a45d0ebed3ebccb
 """
-import os, httplib #was httplib
-import oauth2 as oauth # was: from oauth import oauth
+import os, httplib
+import oauth2 as oauth
 
 
 # pass oauth request to server (use httplib.connection passed in as param) 
@@ -92,6 +92,9 @@ class FitBit():
         while True: #ensures integer is selected
             try:
                 prompt = int(raw_input('Select an API call by number:'))
+                if int(prompt) < 1 or int(prompt) > len(desc):
+                    print 'Invalid selection. Last 7 days steps selected by default.'
+                    prompt = 2 #if out of bounds default to last 7 days data
                 break
             except ValueError:
                 print 'Please select a valid number from the list. Try again ...'
