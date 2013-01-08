@@ -88,6 +88,12 @@ class FitBit():
         for i in range(len(desc)):
             e = desc[i]
             print '%i. %s' % (i+1, e) # i+1 makes the list appear 1,2,3 to user rather than 0-based index 
-        prompt = raw_input('Select an API call by number:')
+        prompt = ""
+        while True: #ensures integer is selected
+            try:
+                prompt = int(raw_input('Select an API call by number:'))
+                break
+            except ValueError:
+                print 'Please select a valid number from the list. Try again ...'
         apistring = calls[int(prompt)-1] # -1 brings the chosen base-1 index back to base-0 of list
         return apistring
