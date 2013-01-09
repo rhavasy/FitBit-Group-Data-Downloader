@@ -94,7 +94,7 @@ class FitBit():
                 prompt = int(raw_input('Select an API call by number:'))
                 if int(prompt) < 1 or int(prompt) > len(desc):
                     print 'Invalid selection. Last 7 days steps selected by default.'
-                    prompt = 2 #if out of bounds default to last 7 days data
+                    prompt = 3 #if out of bounds default to last 7 days data
                 break
             except ValueError:
                 print 'Please select a valid number from the list. Try again ...'
