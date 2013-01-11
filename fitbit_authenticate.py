@@ -11,17 +11,28 @@ def MakeApiCall(access_token):
     file.write(response)
     file.close()
 
-if os.path.isfile('access_token.txt'): #First check if file exists
-    file = open('access_token.txt', 'r') #If yes, read token from file
+Name = 'Alyssa'
+
+if os.path.isfile(Name+'access_token.txt'): #First check if file exists
+    file = open(Name+'access_token.txt', 'r') #If yes, read token from file
     access_token=file.read()
     file.close()
     MakeApiCall(access_token) #Call for data
-else: #Otherwise, do Oauth dance and reauthenticate   
+
+else: #Otherwise, do Oauth dance and reauthenticate
     auth_url, auth_token = f.GetRequestToken()
     webbrowser.open(auth_url)
     PIN = raw_input("Please paste the PIN that is returned from Fitbit [ENTER]: ")
     access_token = f.GetAccessToken(PIN, auth_token)
-    file = open('access_token.txt', 'w') #write token to file
+    file = open(Name+' access_token.txt', 'w') #write token to file
     file.write(access_token)
     file.close()
     MakeApiCall(access_token)
+
+from xml.etree import ElementTree
+with open('results.xml', 'rt') as f:
+        tree = ElementTree.parse(f)
+for node in tree.iter('user'):
+    name = node.attrib.get('fullname')
+    print name
+
