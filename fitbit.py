@@ -7,9 +7,8 @@ This library provides a wrapper to the FitBit API and does not provide storage o
 
 Most of the code has been adapted from: https://groups.google.com/group/fitbit-api/browse_thread/thread/0a45d0ebed3ebccb
 """
-import os, httplib
+import os, httplib, time
 import oauth2 as oauth
-
 
 # pass oauth request to server (use httplib.connection passed in as param) 
 # return response as a string 
@@ -83,8 +82,8 @@ class FitBit():
     
     def PickApiCall(self):
         """Presents user with options and returns specific FitBit API string selected as a string. See FitBit API docs for specific call syntax."""      
-        calls = ['/1/user/-/profile.xml', '/1/user/-/devices.xml', '/1/user/-/activities/steps/date/today/7d.xml'] # profile data, device data, last 7 days steps
-        desc = ['User profile data.', 'Device data (incl. last upload).', 'Last 7 days\' steps.']
+        calls = ['/1/user/-/profile.xml', '/1/user/-/devices.xml', '/1/user/-/activities/steps/date/today/7d.xml', 'built dynamically'] # profile data, device data, last 7 days steps
+        desc = ['User profile data.', 'Device data (incl. last upload).', 'Last 7 days\' steps.', 'Steps for specific date range.']
         for i in range(len(desc)):
             e = desc[i]
             print '%i. %s' % (i+1, e) # i+1 makes the list appear 1,2,3 to user rather than 0-based index 
@@ -98,5 +97,16 @@ class FitBit():
                 break
             except ValueError:
                 print 'Please select a valid number from the list. Try again ...'
-        apistring = calls[int(prompt)-1] # -1 brings the chosen base-1 index back to base-0 of list
+        if prompt == 4:
+            while True:
+                try: #Checks is string can be formatted as a time - ie is it in correct format
+                    startdate = time.strptime(raw_input('Enter desired start date (yyyy-mm-dd): '), "%Y-%m-%d")
+                    enddate = time.strptime(raw_input('Enter desired end date (yyyy-mm-dd): '), "%Y-%m-%d")
+                    #THIS TEST REFORMATS startdate & enddate AS A struc_time OBJECT. MUST CONVERT BACK TO STRING FOR USE IN API CALL.
+                    break
+                except ValueError:
+                    print 'Entered date does not match yyyy-mm-dd format. Try again.'
+            apistring = '/1/user/-/activities/steps/' + time.strftime("%Y-%m-%d",startdate) + '/' + time.strftime("%Y-%m-%d",enddate) + '.xml' #time.strftime converts struc_time back to string in proper format
+        else:
+            apistring = calls[int(prompt)-1] # -1 brings the chosen base-1 index back to base-0 of list
         return apistring
