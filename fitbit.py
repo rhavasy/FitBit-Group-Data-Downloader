@@ -1,4 +1,3 @@
-# Modified by Robert Havasy
 # updated oauth to oauth2 based on https://github.com/jflasher/FitBit.py/blob/master/fitbit.py
 """
 A Python library for accessing the FitBit API.

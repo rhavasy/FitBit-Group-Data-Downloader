@@ -1,6 +1,6 @@
 import fitbit, webbrowser, os.path
 f=fitbit.FitBit()
-
+response = ""
 Name = 'Alyssa'
 
 def MakeApiCall(access_token):
