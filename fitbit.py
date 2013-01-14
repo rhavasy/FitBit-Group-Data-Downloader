@@ -7,7 +7,7 @@ This library provides a wrapper to the FitBit API and does not provide storage o
 
 Most of the code has been adapted from: https://groups.google.com/group/fitbit-api/browse_thread/thread/0a45d0ebed3ebccb
 """
-import os, httplib, time
+import httplib, time
 import oauth2 as oauth
 
 # pass oauth request to server (use httplib.connection passed in as param) 
@@ -20,7 +20,7 @@ class FitBit():
     REQUEST_TOKEN_URL = 'http://%s/oauth/request_token' % SERVER 
     ACCESS_TOKEN_URL = 'http://%s/oauth/access_token' % SERVER 
     AUTHORIZATION_URL = 'http://%s/oauth/authorize' % SERVER 
-    DEBUG = True
+    DEBUG = False
     
     def FetchResponse(self, oauth_request, connection, debug=DEBUG): 
         url = oauth_request.to_url() 
@@ -38,14 +38,9 @@ class FitBit():
         signature_method = oauth.SignatureMethod_PLAINTEXT()
         oauth_request = oauth.Request.from_consumer_and_token(consumer, http_url=self.REQUEST_TOKEN_URL)
         oauth_request.sign_request(signature_method, consumer, None) 
-
         resp = self.FetchResponse(oauth_request, connection) 
         auth_token = oauth.Token.from_string(resp) 
-
-        #build the URL
-        authkey = str(auth_token.key) 
-        authsecret = str(auth_token.secret) 
-        auth_url = "%s?oauth_token=%s" % (self.AUTHORIZATION_URL, auth_token.key)
+        auth_url = "%s?oauth_token=%s" % (self.AUTHORIZATION_URL, auth_token.key) #build the URL
         print auth_url
         return auth_url, auth_token
    
@@ -59,13 +54,11 @@ class FitBit():
         # now the token we get back is an access token
         # parse the response into an OAuthToken object
         access_token = oauth.Token.from_string(self.FetchResponse(oauth_request,connection))
-   
         # store the access token when returning it
         access_token = access_token.to_string()
         return access_token
    
     def ApiCall(self, access_token, apiCall): #removed original hardcoded api call in favor of string passed from PickApiCall()
-        
         signature_method = oauth.SignatureMethod_PLAINTEXT()
         connection = httplib.HTTPSConnection(self.SERVER) 
         #build the access token from a string
@@ -100,8 +93,8 @@ class FitBit():
         if prompt == 4:
             while True:
                 try: #Checks is string can be formatted as a time - ie is it in correct format
-                    startdate = time.strptime(raw_input('Enter desired start date (yyyy-mm-dd): '), "%Y-%m-%d")
-                    enddate = time.strptime(raw_input('Enter desired end date (yyyy-mm-dd): '), "%Y-%m-%d")
+                    startdate = time.strptime(raw_input('Enter desired start date (mm/dd/yyyy): '), "%m/%d/%Y")
+                    enddate = time.strptime(raw_input('Enter desired end date (mm/dd/yyyy): '), "%m/%d/%Y")
                     #THIS TEST REFORMATS startdate & enddate AS A struc_time OBJECT. MUST CONVERT BACK TO STRING FOR USE IN API CALL.
                     break
                 except ValueError:
