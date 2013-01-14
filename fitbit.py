@@ -106,7 +106,7 @@ class FitBit():
                     break
                 except ValueError:
                     print 'Entered date does not match yyyy-mm-dd format. Try again.'
-            apistring = '/1/user/-/activities/steps/' + time.strftime("%Y-%m-%d",startdate) + '/' + time.strftime("%Y-%m-%d",enddate) + '.xml' #time.strftime converts struc_time back to string in proper format
+            apistring = '/1/user/-/activities/steps/date/' + time.strftime("%Y-%m-%d",startdate) + '/' + time.strftime("%Y-%m-%d",enddate) + '.xml' #time.strftime converts struc_time back to string in proper format
         else:
             apistring = calls[int(prompt)-1] # -1 brings the chosen base-1 index back to base-0 of list
         return apistring
