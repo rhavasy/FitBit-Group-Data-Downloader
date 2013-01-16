@@ -51,8 +51,7 @@ class FitBit():
         oauth_request = oauth.Request.from_consumer_and_token(consumer, token=auth_token, http_url=self.ACCESS_TOKEN_URL, parameters={'oauth_verifier': oauth_verifier})
         oauth_request.sign_request(signature_method, consumer, auth_token)
         # now the token we get back is an access token
-        # parse the response into an OAuthToken object
-        access_token = oauth.Token.from_string(self.FetchResponse(oauth_request,connection))
+        access_token = oauth.Token.from_string(self.FetchResponse(oauth_request,connection)) # parse the response into an OAuthToken object
         # store the access token when returning it
         access_token = access_token.to_string()
         return access_token
@@ -89,7 +88,7 @@ class FitBit():
                 break
             except ValueError:
                 print 'Please select a valid number from the list. Try again ...'
-        if prompt == 4:
+        if prompt == 4: # Should change this to verify string rather than index in case list changes.
             while True:
                 try: #Checks is string can be formatted as a time - ie is it in correct format
                     startdate = time.strptime(raw_input('Enter desired start date (mm/dd/yyyy): '), "%m/%d/%Y")
@@ -97,7 +96,7 @@ class FitBit():
                     #THIS TEST REFORMATS startdate & enddate AS A struc_time OBJECT. MUST CONVERT BACK TO STRING FOR USE IN API CALL.
                     break
                 except ValueError:
-                    print 'Entered date does not match yyyy-mm-dd format. Try again.'
+                    print 'Entered date does not match mm/dd/yyyy format. Try again.'
             apistring = '/1/user/-/activities/steps/date/' + time.strftime("%Y-%m-%d",startdate) + '/' + time.strftime("%Y-%m-%d",enddate) + '.xml' #time.strftime converts struc_time back to string in proper format
         else:
             apistring = calls[int(prompt)-1] # -1 brings the chosen base-1 index back to base-0 of list
