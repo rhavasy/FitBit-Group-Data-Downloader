@@ -19,6 +19,3 @@ for value in NamesList:
     print access_token[n]    
     MakeApiCall(access_token[n])
     n=n+1
-    
-    
-

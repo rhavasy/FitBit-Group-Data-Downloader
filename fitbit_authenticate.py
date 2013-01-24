@@ -1,8 +1,6 @@
 import fitbit, webbrowser, os.path, os, csv
 f=fitbit.FitBit()
 
-
-
 def MakeApiCall(access_token):
     apistring = f.PickApiCall()
     response = f.ApiCall(access_token, apistring)
