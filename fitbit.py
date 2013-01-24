@@ -6,31 +6,28 @@ This library provides a wrapper to the FitBit API and does not provide storage o
 
 Most of the code has been adapted from: https://groups.google.com/group/fitbit-api/browse_thread/thread/0a45d0ebed3ebccb
 """
-import httplib, time
+import httplib, time, ConfigParser
 import oauth2 as oauth
 
-# pass oauth request to server (use httplib.connection passed in as param) 
-# return response as a string 
 class FitBit():
-    # Application = 'CCH Data Feed'
-    CONSUMER_KEY    = 'e52e981a10014a74893a1f4c2c8bb987' 
-    CONSUMER_SECRET = '5cd1c526c6c348b79b76816e96034410' 
-    SERVER = 'api.fitbit.com' 
+    #Read global values from config file -- Need to write an error trap if no config file found.
+    config = ConfigParser.RawConfigParser()
+    config.read('fitbit_config.ini')
+    
+    APP_NAME = config.get('Globals', 'AppName')
+    CONSUMER_KEY = config.get('Globals', 'ConsumerKey') 
+    CONSUMER_SECRET = config.get('Globals', 'ConsumerSecret') 
+    SERVER = config.get('Globals', 'Server')
     REQUEST_TOKEN_URL = 'http://%s/oauth/request_token' % SERVER 
     ACCESS_TOKEN_URL = 'http://%s/oauth/access_token' % SERVER 
     AUTHORIZATION_URL = 'http://%s/oauth/authorize' % SERVER 
-    DEBUG = False
     
-    def FetchResponse(self, oauth_request, connection, debug=DEBUG): 
+    def FetchResponse(self, oauth_request, connection): 
         url = oauth_request.to_url() 
         connection.request(oauth_request.method,url) 
-        response = connection.getresponse() 
-        s=response.read() 
-        if debug: 
-            print 'requested URL: %s' % url 
-            print 'server response: %s' % s 
-        return s
-   
+        # response = connection.getresponse() 
+        # s=response.read() 
+        
     def GetRequestToken(self): 
         connection = httplib.HTTPSConnection(self.SERVER)
         consumer = oauth.Consumer(self.CONSUMER_KEY, self.CONSUMER_SECRET)
