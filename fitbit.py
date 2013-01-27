@@ -23,7 +23,8 @@ class FitBit():
     SERVER = config.get('Globals', 'Server')
     REQUEST_TOKEN_URL = 'http://%s/oauth/request_token' % SERVER 
     ACCESS_TOKEN_URL = 'http://%s/oauth/access_token' % SERVER 
-    AUTHORIZATION_URL = 'http://%s/oauth/authorize' % SERVER 
+    AUTHORIZATION_URL = 'http://%s/oauth/authorize' % SERVER
+    TOKENFILENAME = config.get('FileData', 'OutputFilePrefix')
     
     def FetchResponse(self, oauth_request, connection): 
         url = oauth_request.to_url() 
