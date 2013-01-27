@@ -8,6 +8,16 @@ def MakeApiCall(token):
     fo.write(response)
     fo.close()
 
+def Reauthenticate(access_token, name):
+    print "Stored access token %s not accepted for user %s. Reauthenticating. \n" % (access_token, name)
+    auth_url, auth_token = f.GetRequestToken()
+    webbrowser.open(auth_url)
+    PIN = raw_input("\n Please paste the PIN that is returned from Fitbit [ENTER]: ")
+    access_token_new = f.GetAccessToken(PIN, auth_token) #need to trap a value error if pasted the wrong value
+    return access_token_new
+    #print access_token_new
+    #MakeApiCall(access_token_new)
+
 mainfile= '%s.csv' % f.TOKENFILENAME #Read from .ini file by fitbit module
 tmpfile= '%s.tmp.csv' % f.TOKENFILENAME
 read_token=open(mainfile,'rt')
@@ -21,23 +31,17 @@ n=0
 write_token = open(tmpfile, 'wb')
 csvwriter = csv.writer(write_token)
 for value in NamesList:
-    FileName = value #this is where to test for blank access token.
+    FileName = value
     print value
-    print access_token[n]
+    print access_token[n] #this is where to test for blank access token. If blank reauthenticate before throwing error.
     try:
         MakeApiCall(access_token[n])
         csvwriter.writerow([value, access_token[n]]) 
     except ValueError:
-        #print "Stored access token '" + access_token[n] + "' not accepted for user '" + value + "'"
-        print "Stored access token %s not accepted for user %s. Reauthenticating. \n" % (access_token[n], value)
-        auth_url, auth_token = f.GetRequestToken()
-        webbrowser.open(auth_url)
-        PIN = raw_input("\n Please paste the PIN that is returned from Fitbit [ENTER]: ")
-        access_token_new = f.GetAccessToken(PIN, auth_token) #need to trap a value error if pasted the wrong value
-        csvwriter.writerow([value, access_token_new])
-        print "For user %s new access token = %s.\n" % (value, access_token_new)
-        #print access_token_new
-        MakeApiCall(access_token_new)
+        new_token = Reauthenticate(access_token[n], value)
+        MakeApiCall(new_token)
+        csvwriter.writerow([value, new_token])
+        print "For user %s new access token = %s.\n" % (value, new_token)
     n=n+1
 
 write_token.flush()
