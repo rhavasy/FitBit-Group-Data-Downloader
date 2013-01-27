@@ -15,8 +15,6 @@ def Reauthenticate(access_token, name):
     PIN = raw_input("\n Please paste the PIN that is returned from Fitbit [ENTER]: ")
     access_token_new = f.GetAccessToken(PIN, auth_token) #need to trap a value error if pasted the wrong value
     return access_token_new
-    #print access_token_new
-    #MakeApiCall(access_token_new)
 
 mainfile= '%s.csv' % f.TOKENFILENAME #Read from .ini file by fitbit module
 tmpfile= '%s.tmp.csv' % f.TOKENFILENAME
@@ -39,9 +37,9 @@ for value in NamesList:
         csvwriter.writerow([value, access_token[n]]) 
     except ValueError:
         new_token = Reauthenticate(access_token[n], value)
+        print "For user %s new access token = %s.\n Select data again. \n" % (value, new_token)
         MakeApiCall(new_token)
         csvwriter.writerow([value, new_token])
-        print "For user %s new access token = %s.\n" % (value, new_token)
     n=n+1
 
 write_token.flush()
