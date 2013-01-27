@@ -1,4 +1,3 @@
-# updated oauth to oauth2 based on https://github.com/jflasher/FitBit.py/blob/master/fitbit.py
 """
 A Python library for accessing the FitBit API.
 
@@ -6,14 +5,18 @@ This library provides a wrapper to the FitBit API and does not provide storage o
 
 Most of the code has been adapted from: https://groups.google.com/group/fitbit-api/browse_thread/thread/0a45d0ebed3ebccb
 """
-import httplib, time, ConfigParser
+import httplib, time, ConfigParser, sys
 import oauth2 as oauth
 
 class FitBit():
-    #Read global values from config file -- Need to write an error trap if no config file found.
+    #Read global values from config file
     config = ConfigParser.RawConfigParser()
-    config.read('fitbit_config.ini')
-    
+    try:
+        cf=open('fitbit_config.ini')
+    except IOError:
+        sys.exit("Missing or corrupt fitbit_config.ini file in program path! Terminating execution.")
+    config.readfp(cf)
+    cf.close()
     APP_NAME = config.get('Globals', 'AppName')
     CONSUMER_KEY = config.get('Globals', 'ConsumerKey') 
     CONSUMER_SECRET = config.get('Globals', 'ConsumerSecret') 
@@ -25,9 +28,10 @@ class FitBit():
     def FetchResponse(self, oauth_request, connection): 
         url = oauth_request.to_url() 
         connection.request(oauth_request.method,url) 
-        # response = connection.getresponse() 
-        # s=response.read() 
-        
+        response = connection.getresponse() 
+        s=response.read()
+        return s
+            
     def GetRequestToken(self): 
         connection = httplib.HTTPSConnection(self.SERVER)
         consumer = oauth.Consumer(self.CONSUMER_KEY, self.CONSUMER_SECRET)

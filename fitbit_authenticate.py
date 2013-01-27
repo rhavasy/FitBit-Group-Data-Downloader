@@ -1,9 +1,9 @@
-import fitbit, webbrowser, os.path, os, csv
+import fitbit, webbrowser, os, csv
 f=fitbit.FitBit()
 
-def MakeApiCall(access_token):
+def MakeApiCall(token):
     apistring = f.PickApiCall()
-    response = f.ApiCall(access_token, apistring)
+    response = f.ApiCall(token, apistring)
     fo=open(FileName+'_results.xml', 'w') #Write results to file
     fo.write(response)
     fo.close()
@@ -32,7 +32,7 @@ for value in NamesList:
         auth_url, auth_token = f.GetRequestToken()
         webbrowser.open(auth_url)
         PIN = raw_input("Please paste the PIN that is returned from Fitbit [ENTER]: ")
-        access_token_new = f.GetAccessToken(PIN, auth_token)
+        access_token_new = f.GetAccessToken(PIN, auth_token) #need to trap a value error if pasted the wrong value
         csvwriter.writerow([value, access_token_new])
         print value
         print access_token_new

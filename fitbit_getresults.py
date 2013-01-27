@@ -1,4 +1,4 @@
-import fitbit, webbrowser, os.path, csv
+import fitbit, csv
 f=fitbit.FitBit()
 
 def MakeApiCall(access_token):
