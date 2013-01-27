@@ -9,26 +9,31 @@ Based on the fitbit.py library originally found at https://github.com/jplattel/F
 
 # Use
 
-The fitbit.py library provides the necessary Oauth functions to complete the "Oauth Dance." This includes methods for retreiving the request and access tokens.
+The fitbit.py library provides the necessary Oauth functions to complete the "Oauth Dance." This includes methods for retreiving the request and access tokens. 
+Fitbit_authenicate.py will allow a user to pick from a menu of FitBit API call options to generate an XML file of the output from the call. The script reads and
+writes access tokens to a CSV file so that the API call can loop through a group of users to access Fitbit data.
+ 
 
 *Note:* This library is designed to use FitBit's "desktop" app authentication using a PIN, rather than a callback URL. Therefore, the user will be required to manually visit the Authorize URL during the GetAccessToken part and manually add the PIN value obtained to the script.
 
 ## Basic Sequence of Events for Using fitbit_authenticate.py Script
 
 1. Register an app with FitBit and obtain Cunsumer Key and Consumer Secret.
-2. Add the Consumer Key and Consumer Secret values to the fitbit.py library in the appropriate place near the top of the file.
-3. Execute the fitbit_authenticate.py script which will:
-	1. Check if a file called username_access_token.txt exists in the application directory.
-	2. If yes, will prompt user to select one of several FitBit API calls and will write resulting data to a file called username_results.xml in the application directory.
-	3. If no, will call GetRequestToken and obtain the Authorization URL and Authorization Token value via fitbit.py class module.
-	4. Open the user's default web browser and require authentication to the FitBit authorization page.
-	5. Request that the user paste the resulting PIN into the console.
-	6. Call GetAccessToken using PIN and the Authorize Token obtained in step 3. Write the resulting token to the username_access_token.txt file in the application directory.
-	7. Call APICall using the AccessToken obtained in step 6 and will write resulting data to a file called username_results.xml in the application directory.
+2. Add the Consumer Key and Consumer secret values to the fitbit_config.ini file.
+3. Complete the remaining configurations in the fitbit_config.ini file.
+4. Create a CSV file with a single or list if names in the first column (no headings). Close the file.
+4. Execute the fitbit_authenticate.py script which will:
+	1. Will prompt user to select one of several FitBit API calls. 
+	2. Check if an access token exists for a user or list of users from a CSV file.
+	3. If yes, will make the API call and will write resulting data to a file called NAME_results.xml in the application directory.
+	4. If no, will call GetRequestToken and obtain the Authorization URL and Authorization Token value via fitbit.py class module.
+		4a. Open the user's default web browser and require authentication to the FitBit authorization page.
+		4b. Request that the user paste the resulting PIN into the console.
+		4c. Call GetAccessToken using PIN and the Authorize Token. Write the resulting token to a temporary file in the application directory.
+		4d. Call APICall using the AccessToken obtained in step 4 and will write resulting data to a file called username_results.xml in the application directory.
 	
 #Known Issues
 
-fitbit_authenticate.py currently checks only for the presence of an access_token.txt file in the application path. If a file exists, it assumes that the token is valid. There is currently no error handling for an invalid token.
 
 #Help
 
