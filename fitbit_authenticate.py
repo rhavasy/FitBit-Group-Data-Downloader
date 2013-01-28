@@ -1,8 +1,9 @@
 import fitbit, webbrowser, os, csv
 f=fitbit.FitBit()
 
-def MakeApiCall(token):
-    apistring = f.PickApiCall()
+def MakeApiCall(token, apistring):
+    if apistring is None:
+        apistring = f.PickApiCall()
     response = f.ApiCall(token, apistring)
     fo=open(FileName+'_results.xml', 'w') #Write results to file
     fo.write(response)
@@ -14,10 +15,8 @@ def Reauthenticate(access_token, name):
     webbrowser.open(auth_url)
     PIN = raw_input("\n Please paste the PIN that is returned from Fitbit [ENTER]: ")
     #if the PIN is not 26 characters, prompt user
-    if len(PIN) != 26:
+    if len(PIN) < 25:
         PIN = raw_input("\n Please confirm that you have entered the correct PIN returned from the Fitbit website and repaste here.[ENTER]: ")
-    elif len(PIN)== 26:
-        return PIN
     try:
         access_token_new = f.GetAccessToken(PIN, auth_token)
     except ValueError:
@@ -30,7 +29,6 @@ read_token=open(mainfile,'rU')
 csvreader = csv.reader(read_token, dialect='excel', quotechar="'", delimiter=',')
 try:
     accesstokensfile = {rows[0]:rows[1] for rows in csvreader}
-    print 'ok'
 except IndexError:
     ## Need to file read position or else we miss the first input
     read_token.seek(0)
@@ -46,6 +44,26 @@ try:
 except WindowsError:
     ## Do nothing - if the tmp file doesn't exist we are happy
     pass
+
+reportselection = ['Yes', 'No']
+for i in range(len(reportselection)):
+    e = reportselection[i]
+    print '%i. %s' % (i+1, e)
+prompt = ""
+while True:
+    try:
+        prompt = int(raw_input('\n Would you like to get the same data report for all users? \n Please select 1 for Yes or 2 for No: '))
+        if int(prompt) < 1 or int(prompt) > len(reportselection):
+            print '\n Invalid selection. Yes is selected by default.'
+            prompt = 1
+        break
+    except ValueError:
+        print '\n Please select a valid response. Try again... \n'
+if prompt == 1:
+    print '\n Which report would you like to get for all users on your list? \n'
+    APISTRING = f.PickApiCall()
+if prompt == 2:
+    APISTRING = None
  
 n=0
 #fieldnames = ['value', 'access_token']
@@ -56,12 +74,12 @@ for value in NamesList:
     print value
     print access_token[n] #this is where to test for blank access token. If blank reauthenticate before throwing error.
     try:
-        MakeApiCall(access_token[n])
+        MakeApiCall(access_token[n], APISTRING)
         csvwriter.writerow([value, access_token[n]]) 
     except ValueError:
         new_token = Reauthenticate(access_token[n], value)
-        print "For user %s new access token = %s.\n Select data again. \n" % (value, new_token)
-        MakeApiCall(new_token)
+        print "For user %s new access token = %s." % (value, new_token)
+        MakeApiCall(new_token, APISTRING)
         csvwriter.writerow([value, new_token])
     n=n+1
 
