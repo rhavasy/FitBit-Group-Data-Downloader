@@ -18,11 +18,26 @@ def Reauthenticate(access_token, name):
 
 mainfile= '%s.csv' % f.TOKENFILENAME #Read from .ini file by fitbit module
 tmpfile= '%s.tmp.csv' % f.TOKENFILENAME
-read_token=open(mainfile,'rt')
+read_token=open(mainfile,'rU')
 csvreader = csv.reader(read_token, dialect='excel', quotechar="'", delimiter=',')
-accesstokensfile = {rows[0]:rows[1] for rows in csvreader}
-access_token = accesstokensfile.values()
+try:
+    accesstokensfile = {rows[0]:rows[1] for rows in csvreader}
+    print 'ok'
+except IndexError:
+    ## Need to file read position or else we miss the first input
+    read_token.seek(0)
+    accesstokensfile = {rows[0]:rows[0] for rows in csvreader}
+    ## Assign blank values to all missing keys
+    for key in accesstokensfile.keys():
+        accesstokensfile[key] = ''
 NamesList = accesstokensfile.keys()
+access_token = accesstokensfile.values()
+## Remove temporary csv file if it exists
+try:
+    os.remove(tmpfile)
+except WindowsError:
+    ## Do nothing - if the tmp file doesn't exist we are happy
+    pass
  
 n=0
 #fieldnames = ['value', 'access_token']
