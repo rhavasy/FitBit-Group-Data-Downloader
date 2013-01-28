@@ -15,7 +15,7 @@ def Reauthenticate(access_token, name):
     PIN = raw_input("\n Please paste the PIN that is returned from Fitbit [ENTER]: ")
     #if the PIN is not 26 characters, prompt user
     if len(PIN) != 26:
-        PIN = raw_input("\n Please confirm that you have entered the correct PIN returned from the Fitbit site in your web browser and repaste here.[ENTER]: ")
+        PIN = raw_input("\n Please confirm that you have entered the correct PIN returned from the Fitbit website and repaste here.[ENTER]: ")
     elif len(PIN)== 26:
         return PIN
     try:
