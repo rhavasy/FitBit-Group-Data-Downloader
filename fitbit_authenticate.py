@@ -13,7 +13,15 @@ def Reauthenticate(access_token, name):
     auth_url, auth_token = f.GetRequestToken()
     webbrowser.open(auth_url)
     PIN = raw_input("\n Please paste the PIN that is returned from Fitbit [ENTER]: ")
-    access_token_new = f.GetAccessToken(PIN, auth_token) #need to trap a value error if pasted the wrong value
+    #if the PIN is not 26 characters, prompt user
+    if len(PIN) != 26:
+        PIN = raw_input("\n Please confirm that you have entered the correct PIN returned from the Fitbit site in your web browser and repaste here.[ENTER]: ")
+    elif len(PIN)== 26:
+        return PIN
+    try:
+        access_token_new = f.GetAccessToken(PIN, auth_token)
+    except ValueError:
+        Reauthenticate(access_token, value)
     return access_token_new
 
 mainfile= '%s.csv' % f.TOKENFILENAME #Read from .ini file by fitbit module
