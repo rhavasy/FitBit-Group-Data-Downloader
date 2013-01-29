@@ -27,13 +27,15 @@ writes access tokens to a CSV file so that the API call can loop through a group
 	2. Check if an access token exists for a user or list of users from a CSV file.
 	3. If yes, will make the API call and will write resulting data to a file called NAME_results.xml in the application directory.
 	4. If no, will call GetRequestToken and obtain the Authorization URL and Authorization Token value via fitbit.py class module.
-		4a. Open the user's default web browser and require authentication to the FitBit authorization page.
-		4b. Request that the user paste the resulting PIN into the console.
-		4c. Call GetAccessToken using PIN and the Authorize Token. Write the resulting token to a temporary file in the application directory.
-		4d. Call APICall using the AccessToken obtained in step 4 and will write resulting data to a file called username_results.xml in the application directory.
+		1. Open the user's default web browser and require authentication to the FitBit authorization page.
+		2. Request that the user paste the resulting PIN into the console.
+		3. Call GetAccessToken using PIN and the Authorize Token. Write the resulting token to a temporary file in the application directory.
+		4. Call APICall using the AccessToken obtained in step 4 and will write resulting data to a file called username_results.xml in the application directory.
 	
 #Known Issues
-
+- There is no control over the order for which the script reads names and tokens from the CSV file
+- Did not account for all errors occuring for obtaining the PIN.
+- PIN appears to have 25 or 26 characters, but we have not accounted for all possibilities.
 
 #Help
 
