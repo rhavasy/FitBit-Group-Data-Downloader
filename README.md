@@ -21,9 +21,9 @@ writes access tokens to a CSV file so that the API call can loop through a group
 1. Register an app with FitBit and obtain Cunsumer Key and Consumer Secret.
 2. Add the Consumer Key and Consumer secret values to the fitbit_config.ini file.
 3. Complete the remaining configurations in the fitbit_config.ini file.
-4. Create a CSV file with a single or list if names in the first column (no headings). Close the file.
+4. Create a CSV file with a single or list if names in the first column (no headings). Ensure that file name matches the file prefix in the Config file. Close the file.
 4. Execute the fitbit_authenticate.py script which will:
-	1. Will prompt user to select one of several FitBit API calls. 
+	1. Prompt user to select if they would like to get the same data for all users and will present several FitBit API call options to select. 
 	2. Check if an access token exists for a user or list of users from a CSV file.
 	3. If yes, will make the API call and will write resulting data to a file called NAME_results.xml in the application directory.
 	4. If no, will call GetRequestToken and obtain the Authorization URL and Authorization Token value via fitbit.py class module.
