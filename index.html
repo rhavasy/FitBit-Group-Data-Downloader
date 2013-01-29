@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>FitBit Group Data Downloader by rhavasy</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">FitBit Group Data Downloader</h1>
+        <p class="header">A Python library and authentication function to download FitBit data for a list of accounts.</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/rhavasy/FitBit-Group-Data-Downloader/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/rhavasy/FitBit-Group-Data-Downloader/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/rhavasy/FitBit-Group-Data-Downloader">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/rhavasy">rhavasy</a></p>
+
+
+      </header>
+      <section>
+        <h1>fitbit-python</h1>
+
+<p>Python console application for FitBit data gathering. Includes the fitbit.py library with the fitbit class module which contains the necessary methods for completing the FitBit OAuth authentication, as well as methods for querying the FitBit API. Also contains the fitbit_authenticate.py script which walks a user through the authentication and data retreival process as outlined below.</p>
+
+<h1>Heritage</h1>
+
+<p>Based on the fitbit.py library originally found at <a href="https://github.com/jplattel/FitBit.py.git">https://github.com/jplattel/FitBit.py.git</a> and modified for Oauth2 use at <a href="https://github.com/jflasher/FitBit.py/blob/master/fitbit.py">https://github.com/jflasher/FitBit.py/blob/master/fitbit.py</a>.</p>
+
+<h1>Use</h1>
+
+<p>The fitbit.py library provides the necessary Oauth functions to complete the "Oauth Dance." This includes methods for retreiving the request and access tokens. 
+Fitbit_authenicate.py will allow a user to pick from a menu of FitBit API call options to generate an XML file of the output from the call. The script reads and
+writes access tokens to a CSV file so that the API call can loop through a group of users to access Fitbit data.</p>
+
+<p><em>Note:</em> This library is designed to use FitBit's "desktop" app authentication using a PIN, rather than a callback URL. Therefore, the user will be required to manually visit the Authorize URL during the GetAccessToken part and manually add the PIN value obtained to the script.</p>
+
+<h2>Basic Sequence of Events for Using fitbit_authenticate.py Script</h2>
+
+<ol>
+<li>Register an app with FitBit and obtain Cunsumer Key and Consumer Secret.</li>
+<li>Add the Consumer Key and Consumer secret values to the fitbit_config.ini file.</li>
+<li>Complete the remaining configurations in the fitbit_config.ini file.</li>
+<li>Create a CSV file with a single or list if names in the first column (no headings). Ensure that file name matches the file prefix in the Config file. Close the file.</li>
+<li>Execute the fitbit_authenticate.py script which will:
+
+<ol>
+<li>Prompt user to select if they would like to get the same data for all users and will present several FitBit API call options to select. </li>
+<li>Check if an access token exists for a user or list of users from a CSV file.</li>
+<li>If yes, will make the API call and will write resulting data to a file called NAME_results.xml in the application directory.</li>
+<li>If no, will call GetRequestToken and obtain the Authorization URL and Authorization Token value via fitbit.py class module.
+
+<ol>
+<li>Open the user's default web browser and require authentication to the FitBit authorization page.</li>
+<li>Request that the user paste the resulting PIN into the console.</li>
+<li>Call GetAccessToken using PIN and the Authorize Token. Write the resulting token to a temporary file in the application directory.</li>
+<li>Call APICall using the AccessToken obtained in step 4 and will write resulting data to a file called username_results.xml in the application directory.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol><h1>Known Issues</h1>
+
+<ul>
+<li>There is no control over the order for which the script reads names and tokens from the CSV file</li>
+<li>Did not account for all errors occuring for obtaining the PIN.</li>
+<li>PIN appears to have 25 or 26 characters, but we have not accounted for all possibilities.</li>
+</ul><h1>Help</h1>
+
+<p>Modifications made by Rob Havasy and Alyssa Woulfe at the Center for Connected Health, Boston, MA.
+For help (best effort only) or information contact:</p>
+
+<p><a href="mailto:rhavasy@partners.org">rhavasy@partners.org</a>
+<a href="mailto:awoulfe@partners.org">awoulfe@partners.org</a></p>
+
+<p>Center for Connected Health
+25 New Chardon St.
+Suite 300
+Boston, MA 02114
+<a href="http://www.connected-health.org/">http://www.connected-health.org/</a></p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
