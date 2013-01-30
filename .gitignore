@@ -169,4 +169,6 @@ pip-log.txt
 ###############
 ## Project Files
 ###############
+*.ini
+fitbit_config.ini
 
