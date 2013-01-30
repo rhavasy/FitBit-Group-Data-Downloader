@@ -22,11 +22,12 @@ writes access tokens to a CSV file so that the API call can loop through a group
 
 1. Register an app with FitBit and obtain Cunsumer Key and Consumer Secret. **Note:** the app must be registered as a desktop app, not a web app.
 2. Add the Consumer Key and Consumer secret values to the fitbit_config.ini file.
-3. Complete the remaining configurations in the fitbit_config.ini file, including the name of the output file. You only need to put the file name prefix in the .ini file, not the file extension. The script will add the necessary extension to the name. For example, if you want the output files to be USERNAME_FILENAME.ext, enter FILENAME in the .ini file.
-4. Create a CSV file with a single or list if names in the first column (no headings). Ensure that file name matches the file prefix in the Config file. Close the file. The script is set to use the Excel dialect of CSV file. If you create a CSV file using any other tool, you may have to change the following line: ```python
+3. Create a CSV file with a single or list if names in the first column (no headings).
+4. Complete the remaining configurations in the fitbit_config.ini file, by adding the name of the file you just created for the user names. You only need to put the file name prefix in the .ini file, not the file extension. The script will add the necessary extension to the name. For example, if you created a file called USERNAMES.csv, enter USERNAMES in the .ini file. It is critical that you ensure the file name you create matches the file prefix in the Config file.
+5. The script is set to use the Excel dialect of CSV file. If you create a CSV file using any other tool, you may have to change the following line in fitbit_authenticate.py: ```python
 csvreader = csv.reader(read_token, dialect='excel', quotechar="'", delimiter=',') ```
-5. Install Oauth 2 (use easy_install, pip install, or installation tool of your choice).
-6. Execute the fitbit_authenticate.py script which will:
+6. Install Oauth 2 (use easy_install, pip install, or installation tool of your choice).
+7. Execute the fitbit_authenticate.py script which will:
 	1. Prompt user to select if they would like to get the same data for all users and will present several FitBit API call options to select. 
 	2. Check if an access token exists for a user or list of users from the CSV file.
 	3. If yes, will make the API call and will write resulting data to a file called USERNAME_FILENAME.xml in the application directory.
@@ -49,13 +50,8 @@ For help (best effort only) or information contact:
 rhavasy@partners.org or awoulfe@partners.org
 
 Center for Connected Health
-
 25 New Chardon St.
-
 Suite 300
-
 Boston, MA 02114
 
 http://www.connected-health.org/
-
-![Center for Connected Health](http://symposium.connected-health.org/sites/default/files/partnersCCHLogo.png)
