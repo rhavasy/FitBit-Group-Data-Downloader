@@ -41,7 +41,7 @@ access_token = accesstokensfile.values()
 ## Remove temporary csv file if it exists
 try:
     os.remove(tmpfile)
-except WindowsError:
+except OSError:
     ## Do nothing - if the tmp file doesn't exist we are happy
     pass
 
@@ -97,7 +97,7 @@ while True :
         if mainfile != mainfile_new:
             print "New file '" + mainfile_new + "' has been created!"
         break
-    except WindowsError: #this isn't a standard error - should build a better trap
+    except OSError:
         if mainfile_new == mainfile:
             print "Unable to access file '" + mainfile_new + "', please make sure that this file is NOT open on your computer"
             choice = raw_input("Press 1 to retry access to '" + mainfile_new + "', or press any other key to write to a new file: ")
