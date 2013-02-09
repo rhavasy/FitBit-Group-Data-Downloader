@@ -9,18 +9,19 @@ def MakeApiCall(token, apistring):
     fo.write(response)
     fo.close()
 
-def Reauthenticate(access_token, name):
-    print "Stored access token %s not accepted for user %s. Reauthenticating. \n" % (access_token, name)
+def Reauthenticate(bad_token, name):
+    """Called if the currently stored token is not accepted for a user OR if token is missing. Receives the old token which may be null and the user name. Returns new valid token."""
+    print "Stored access token %s not accepted for user %s. Reauthenticating. \n" % (bad_token, name)
     auth_url, auth_token = f.GetRequestToken()
     webbrowser.open(auth_url)
     PIN = raw_input("\n Please paste the PIN that is returned from Fitbit [ENTER]: ")
-    #if the PIN is not 26 characters, prompt user
+    #if the PIN is not 26 characters, prompt user - in testing all PINs have been 25 or 26 characters
     if len(PIN) < 25:
         PIN = raw_input("\n Please confirm that you have entered the correct PIN returned from the Fitbit website and repaste here.[ENTER]: ")
     try:
-        access_token_new = f.GetAccessToken(PIN, auth_token)
+        access_token_new = f.GetAccessToken(PIN, auth_token) #This traps error if PIN isn't pasted correctly. In testing some users typed a number & hit ENTER and bad PIN caused error.
     except ValueError:
-        Reauthenticate(access_token, value)
+        Reauthenticate(bad_token, value) #If bad PIN try again
     return access_token_new
 
 mainfile= '%s.csv' % f.TOKENFILENAME #Read from .ini file by fitbit module
