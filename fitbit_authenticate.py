@@ -21,7 +21,7 @@ def Reauthenticate(bad_token, name):
     try:
         access_token_new = f.GetAccessToken(PIN, auth_token) #This traps error if PIN isn't pasted correctly. In testing some users typed a number & hit ENTER and bad PIN caused error.
     except ValueError:
-        Reauthenticate(bad_token, value) #If bad PIN try again
+        Reauthenticate(bad_token, name) #If bad PIN try again
     return access_token_new
 
 mainfile= '%s.csv' % f.TOKENFILENAME #Read from .ini file by fitbit module
