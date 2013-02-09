@@ -5,7 +5,10 @@ This library provides a wrapper to the FitBit API and does not provide storage o
 
 Most of the code has been adapted from: https://groups.google.com/group/fitbit-api/browse_thread/thread/0a45d0ebed3ebccb
 """
-import httplib, time, ConfigParser, sys
+import httplib
+import time
+import ConfigParser
+import sys
 import oauth2 as oauth
 
 class FitBit():

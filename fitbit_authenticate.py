@@ -1,4 +1,8 @@
-import fitbit, webbrowser, os, csv
+import fitbit
+import webbrowser
+import os
+import csv
+
 f=fitbit.FitBit()
 
 def MakeApiCall(token, apistring):
