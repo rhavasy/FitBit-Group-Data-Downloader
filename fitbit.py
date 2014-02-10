@@ -5,10 +5,7 @@ This library provides a wrapper to the FitBit API and does not provide storage o
 
 Most of the code has been adapted from: https://groups.google.com/group/fitbit-api/browse_thread/thread/0a45d0ebed3ebccb
 """
-import httplib
-import time
-import ConfigParser
-import sys
+import httplib, time, ConfigParser, sys
 import oauth2 as oauth
 
 class FitBit():
@@ -29,10 +26,9 @@ class FitBit():
     AUTHORIZATION_URL = 'http://%s/oauth/authorize' % SERVER
     TOKENFILENAME = config.get('FileData', 'OutputFilePrefix')
     
-    def FetchResponse(self, oauth_request, connection): 
-        url = oauth_request.to_url() 
-        connection.request(oauth_request.method,url) 
-        response = connection.getresponse() 
+    def FetchResponse(self, oauth_request, connection, url): #added URL as config. parameter
+        connection.request(oauth_request.method, url, headers=oauth_request.to_header()) #added headers to pass parameters
+        response = connection.getresponse()
         s=response.read()
         return s
             
@@ -41,11 +37,10 @@ class FitBit():
         consumer = oauth.Consumer(self.CONSUMER_KEY, self.CONSUMER_SECRET)
         signature_method = oauth.SignatureMethod_PLAINTEXT()
         oauth_request = oauth.Request.from_consumer_and_token(consumer, http_url=self.REQUEST_TOKEN_URL)
-        oauth_request.sign_request(signature_method, consumer, None) 
-        resp = self.FetchResponse(oauth_request, connection) 
+        oauth_request.sign_request(signature_method, consumer, None)
+        resp = self.FetchResponse(oauth_request, connection, self.REQUEST_TOKEN_URL) #passing in explicit url
         auth_token = oauth.Token.from_string(resp) 
         auth_url = "%s?oauth_token=%s" % (self.AUTHORIZATION_URL, auth_token.key) #build the URL
-        print auth_url
         return auth_url, auth_token
    
     def GetAccessToken(self, access_code, auth_token):
@@ -56,7 +51,7 @@ class FitBit():
         oauth_request = oauth.Request.from_consumer_and_token(consumer, token=auth_token, http_url=self.ACCESS_TOKEN_URL, parameters={'oauth_verifier': oauth_verifier})
         oauth_request.sign_request(signature_method, consumer, auth_token)
         # now the token we get back is an access token
-        access_token = oauth.Token.from_string(self.FetchResponse(oauth_request,connection)) # parse the response into an OAuthToken object
+        access_token = oauth.Token.from_string(self.FetchResponse(oauth_request,connection, self.ACCESS_TOKEN_URL)) # parse the response into an OAuthToken object / passingin explicit url
         # store the access token when returning it
         access_token = access_token.to_string()
         return access_token
