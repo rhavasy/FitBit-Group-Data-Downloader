@@ -44,10 +44,10 @@ csvreader = csv.reader(read_token, dialect='excel', quotechar="'", delimiter=','
 
 #Help
 
-Modifications made by Rob Havasy and Alyssa Woulfe at the Center for Connected Health, Boston, MA.
+Modifications made by Rob Havasy, Alyssa Woulfe, and Ahnissa Beaupre at the Center for Connected Health, Boston, MA.
 For help (best effort only) or information contact:
 
-rhavasy@partners.org or awoulfe@partners.org
+rhavasy@partners.org, awoulfe@partners.org, or abeaupre@partners.org
 
 Center for Connected Health
 25 New Chardon St.
