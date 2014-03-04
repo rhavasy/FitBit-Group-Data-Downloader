@@ -73,9 +73,9 @@ class FitBit():
     
     def PickApiCall(self):
         """Presents user with options and returns specific FitBit API string selected as a string. See FitBit API docs for specific call syntax."""      
-        calls = ['/1/user/-/profile.xml', '/1/user/-/devices.xml', '/1/user/-/activities/steps/date/today/7d.xml', 'built dynamically', '/1/user/-/foods/log/date/2014-01-24.xml', '/1/user/-/sleep/minutesAsleep/date/today/2014-01-24.xml'] # profile data, device data, last 7 days steps
-        desc = ['User profile data.', 'Device data (incl. last upload).', 'Last 7 days\' steps.', 'Steps for specific date range.', 'Get food.','Get sleep.']
-        abrev= ['UD', 'DD', 'S', 'SS', 'GF', 'GS']
+        calls = ['/1/user/-/profile.xml', '/1/user/-/devices.xml', '/1/user/-/activities/steps/date/today/7d.xml', 'built dynamically', '/1/user/-/activities/tracker/minutesSedentary/date/today/7d.xml', '/1/user/-/activities/tracker/minutesLightlyActive/date/today/7d.xml','/1/user/-/activities/tracker/minutesFairlyActive/date/today/7d.xml', '/1/user/-/activities/tracker/minutesVeryActive/date/today/7d.xml', '/1/user/-/foods/log/date/2014-01-24.xml', '/1/user/-/sleep/startTime/date/today/7d.xml','/1/user/-/sleep/timeInBed/date/today/7d.xml', '/1/user/-/sleep/minutesAsleep/date/today/7d.xml', '/1/user/-/sleep/awakeningsCount/date/today/7d.xml', '/1/user/-/sleep/minutesAwake/date/today/7d.xml', '/1/user/-/sleep/minutesToFallAsleep/date/today/7d.xml', '/1/user/-/sleep/minutesAfterWakeup/date/today/7d.xml', '/1/user/-/sleep/efficiency/date/today/7d.xml'] # profile data, device data, last 7 days steps
+        desc = ['User profile data.', 'Device data (incl. last upload).', 'Last 7 days\' steps.', 'Steps for specific date range.', 'Get minutes sedentary.', 'Get minutes lightly active.', 'Get minutes fairly active.','Get minutes very active.', 'Get food.','Get start time asleep.', 'Get time in bed.', 'Get minutes asleep', 'Get number of awakenings', 'Get minutes awake.', 'Get minutes to fall asleep.', 'Get minutes after wake-up.', 'Get efficiency.',]
+        
                 
         for i in range(len(desc)):
             e = desc[i]
